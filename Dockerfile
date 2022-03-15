@@ -3,12 +3,13 @@ FROM crystallang/crystal:1.3-alpine as BUILDER
 WORKDIR /app
 
 COPY entrypoint.cr /app
+COPY sshd_config.ecr /app
 
-RUN crystal build entrypoint.cr --release
+RUN crystal build entrypoint.cr --release --static
 
 FROM alpine:3.15.0
 
-ARG SSHD_PORT=36622
+ENV SSHD_PORT=36622
 ENV HOME=/var/www
 
 ENTRYPOINT ["/entrypoint"]
