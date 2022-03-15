@@ -20,7 +20,7 @@ EXPOSE "${SSHD_PORT}/tcp"
 
 COPY --from=BUILDER /app/entrypoint /entrypoint
 
-RUN delgroup www-data && addgroup -g 1001 -S www-data && adduser -u 1001 -S www-data -G www-data
+RUN delgroup www-data && addgroup -g 1001 -S www-data && adduser -h /var/www  -u 1001 -S www-data -G www-data
 
 # Install openssh-server for sftp
 RUN apk --no-cache add openssh-server
