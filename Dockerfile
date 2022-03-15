@@ -9,7 +9,7 @@ RUN crystal build entrypoint.cr --release --static
 
 FROM alpine:3.15.0
 
-LABEL org.opencontainers.image.source https://github.com/Container-Driven-Development/php-apache-sftp
+LABEL org.opencontainers.image.source https://github.com/Container-Driven-Development/sftp
 
 ENV SSHD_PORT=36622
 ENV HOME=/var/www
