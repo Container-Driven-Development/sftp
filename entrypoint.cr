@@ -3,8 +3,8 @@ require "ecr"
 require "file_utils"
 
 client_env_prefix = "SSH_CLIENT"
-client_user_id = "#{ENV["SSH_USER_ID"]}"
-client_group_id = "#{ENV["SSH_GROUP_ID"]}"
+client_user_id = ENV["SSH_USER_ID"].to_i
+client_group_id = ENV["SSH_GROUP_ID"].to_i
 dot_ssh_folder_path = "#{ENV["SSH_HOMEDIR"]}/.ssh"
 
 FileUtils.mkdir_p(dot_ssh_folder_path, 0o700)
