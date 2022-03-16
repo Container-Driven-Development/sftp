@@ -6,7 +6,7 @@ WORKDIR /app
 COPY entrypoint.cr /app
 COPY sshd_config.ecr /app
 
-RUN crystal build entrypoint.cr --release --static --no-debug
+RUN crystal build entrypoint.cr --release --no-debug
 
 # IMAGE
 FROM alpine:3.15.0
@@ -24,7 +24,7 @@ ENTRYPOINT ["/entrypoint"]
 
 EXPOSE "${SSHD_PORT}/tcp"
 
-RUN apk --no-cache add openssh openssh-sftp-server
+RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc
 
 COPY --from=BUILDER /app/entrypoint /entrypoint
 
