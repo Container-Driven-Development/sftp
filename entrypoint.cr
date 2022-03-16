@@ -1,14 +1,24 @@
 require "ecr"
 
-authorized_keys_path = "#{ENV["HOME"]}/authorized_keys"
+require "file_utils"
+
+client_env_prefix = "SSH_CLIENT"
+dot_ssh_folder_path = "#{ENV["SSH_HOMEDIR"]}/.ssh"
+
+FileUtils.mkdir_p(dot_ssh_folder_path, 0o700)
+File.chown(dot_ssh_folder_path, 1001, 1001)
+
+authorized_keys_path = "#{dot_ssh_folder_path}/authorized_keys"
 
 File.open(authorized_keys_path, "w", 0o400) do |file|
-  ENV.select { |key, value| key.includes?("SSHD_CLIENT") }.each do |key, value|
+  ENV.select { |key, value| key.includes?(client_env_prefix) }.each do |key, value|
     user_name = key.split("_")[2]
     puts "🧑‍🎨 Adding user '#{user_name}' public key '#{value}' to '#{authorized_keys_path}'"
     file.puts "#{value} ( #{user_name} )"
   end
 end
+
+File.chown(authorized_keys_path, 1001, 1001)
 
 if !File.exists?("/etc/ssh/ssh_host_ed25519_key")
   puts "🕵️ Generating new /etc/ssh/ssh_host_ed25519_key"

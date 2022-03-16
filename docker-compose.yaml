@@ -1,0 +1,30 @@
+services:
+
+  sftp:
+    image: sftp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "36622:36622"
+    environment:
+      - SSH_CLIENT_fake=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAFfOmoZ3UyAsFw0lYzWyehyIyUiGmrs/M1BwUptb52q fake@example.com
+    healthcheck:
+        test: ["CMD", "echo", ">", "/dev/tcp/127.0.0.1/36622"]
+        interval: 5s
+        timeout: 3s
+        retries: 20
+
+  sftp-test:
+    image: sftp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      sftp:
+        condition: service_healthy
+    entrypoint: /test.sh sftp
+    working_dir: /
+    volumes:
+      - ./test/test.sh:/test.sh
+      - ./test/id_ed25519:/var/www/.ssh/id_ed25519

@@ -1,12 +1,8 @@
-# Secure defaults
-# See: https://stribika.github.io/2015/01/04/secure-secure-shell.html
 Port <%= @port %>
 Protocol 2
 HostKey /etc/ssh/ssh_host_ed25519_key
 HostKey /etc/ssh/ssh_host_rsa_key
 
-# Faster connection
-# See: https://github.com/atmoz/sftp/issues/11
 UseDNS no
 
 # Limited access
@@ -17,7 +13,8 @@ AllowTcpForwarding no
 # Force sftp and chroot jail
 Subsystem sftp internal-sftp
 ForceCommand internal-sftp
+# Make sure that this home directory is owned and only writable by root otherwise you will get 'Authentication refused: bad ownership or modes for directory' error
 ChrootDirectory %h
 
 # Enable this for more logs
-#LogLevel VERBOSE
+# LogLevel DEBUG3
