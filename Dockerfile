@@ -15,9 +15,9 @@ LABEL org.opencontainers.image.source https://github.com/Container-Driven-Develo
 
 ENV SSHD_PORT=36622
 ENV SSH_USER_NAME=www-data
-ENV SSH_USER_ID=1001
+ENV SSH_USER_ID=1000
 ENV SSH_GROUP_NAME=www-data
-ENV SSH_GROUP_ID=1001
+ENV SSH_GROUP_ID=1000
 ENV SSH_HOMEDIR=/var/www
 
 ENTRYPOINT ["/entrypoint"]

@@ -3,10 +3,12 @@ require "ecr"
 require "file_utils"
 
 client_env_prefix = "SSH_CLIENT"
+client_user_id = ENV["SSH_USER_ID"]
+client_group_id = ENV["SSH_GROUP_ID"]
 dot_ssh_folder_path = "#{ENV["SSH_HOMEDIR"]}/.ssh"
 
 FileUtils.mkdir_p(dot_ssh_folder_path, 0o700)
-File.chown(dot_ssh_folder_path, 1001, 1001)
+File.chown(dot_ssh_folder_path, client_user_id, client_group_id)
 
 authorized_keys_path = "#{dot_ssh_folder_path}/authorized_keys"
 
@@ -18,7 +20,7 @@ File.open(authorized_keys_path, "w", 0o400) do |file|
   end
 end
 
-File.chown(authorized_keys_path, 1001, 1001)
+File.chown(authorized_keys_path, client_user_id, client_group_id)
 
 if !File.exists?("/etc/ssh/ssh_host_ed25519_key")
   puts "🕵️ Generating new /etc/ssh/ssh_host_ed25519_key"
