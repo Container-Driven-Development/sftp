@@ -41,7 +41,7 @@ class SshdConfig
 end
 
 File.open("/etc/ssh/sshd_config", "w", 0o400) do |file|
-  file.puts SshdConfig.new(ENV["SSHD_PORT"], (ENV["SSHD_PORT"] == "true")).to_s
+  file.puts SshdConfig.new(ENV["SSHD_PORT"], (ENV["SSHD_ENABLE_SSH"] == "true")).to_s
 end
 
 puts "🏁 All done starting sshd"
