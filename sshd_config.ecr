@@ -14,9 +14,9 @@ AllowTcpForwarding no
 Subsystem sftp internal-sftp
 <%- if @ssh_enabled -%>
 ForceCommand internal-sftp
-<%- end -%>
 # Make sure that this home directory is owned and only writable by root otherwise you will get 'Authentication refused: bad ownership or modes for directory' error
 ChrootDirectory %h
+<%- end -%>
 
 # Enable this for more logs
 # LogLevel DEBUG3
