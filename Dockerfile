@@ -29,8 +29,8 @@ RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc
 COPY --from=BUILDER /app/entrypoint /entrypoint
 
 RUN delgroup ${SSH_GROUP_NAME} && \
-  addgroup -g ${SSH_GROUP_ID} -S ${SSH_USER_NAME} && \ 
-  adduser -D -h ${SSH_HOMEDIR} -u ${SSH_USER_ID} -G ${SSH_GROUP_NAME} ${SSH_USER_NAME} && \
+  addgroup -g ${SSH_GROUP_ID} -S ${SSH_USER_NAME} && \
+  adduser -D -h ${SSH_HOMEDIR} -u ${SSH_USER_ID} -G ${SSH_GROUP_NAME} -s /bin/sh ${SSH_USER_NAME} && \
   echo "${SSH_USER_NAME}:*" | chpasswd -e && \
   chown root:root ${SSH_HOMEDIR} && \
   chmod 755 /var/www && \
