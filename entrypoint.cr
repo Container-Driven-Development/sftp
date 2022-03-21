@@ -34,14 +34,14 @@ end
 
 puts "🩹 Generating sshd config with port '#{ENV["SSHD_PORT"]}'"
 class SshdConfig
-  def initialize(@port : String)
+  def initialize(@port : String, @ssh_enabled : Bool)
   end
 
   ECR.def_to_s "sshd_config.ecr"
 end
 
 File.open("/etc/ssh/sshd_config", "w", 0o400) do |file|
-  file.puts SshdConfig.new(ENV["SSHD_PORT"]).to_s
+  file.puts SshdConfig.new(ENV["SSHD_PORT"], (ENV["SSHD_PORT"] == "true")).to_s
 end
 
 puts "🏁 All done starting sshd"
