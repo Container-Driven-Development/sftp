@@ -25,7 +25,7 @@ ENTRYPOINT ["/entrypoint"]
 
 EXPOSE "${SSHD_PORT}/tcp"
 
-RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc mariadb-client
+RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc mariadb-client curl
 
 COPY --from=BUILDER /app/entrypoint /entrypoint
 
