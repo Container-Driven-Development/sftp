@@ -25,12 +25,9 @@ ENTRYPOINT ["/entrypoint"]
 
 EXPOSE "${SSHD_PORT}/tcp"
 
+RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc
+
 COPY --from=BUILDER /app/entrypoint /entrypoint
-
-RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc && \
-  ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N '' && \
-  ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''
-
 
 RUN delgroup ${SSH_GROUP_NAME} && \
   addgroup -g ${SSH_GROUP_ID} -S ${SSH_USER_NAME} && \

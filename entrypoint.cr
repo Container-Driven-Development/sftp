@@ -22,6 +22,16 @@ end
 
 File.chown(authorized_keys_path, client_user_id, client_group_id)
 
+if !File.exists?("/etc/ssh/ssh_host_ed25519_key")
+  puts "🕵️ Generating new /etc/ssh/ssh_host_ed25519_key"
+  Process.run("ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''", output: Process::Redirect::Pipe, shell: true)
+end
+
+if !File.exists?("/etc/ssh/ssh_host_rsa_key")
+  puts "🕵️ Generating new /etc/ssh/ssh_host_rsa_key"
+  Process.run("ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ''", output: Process::Redirect::Pipe, shell: true)
+end
+
 puts "🩹 Generating sshd config with port '#{ENV["SSHD_PORT"]}'"
 class SshdConfig
   def initialize(@port : String, @ssh_enabled : Bool)
