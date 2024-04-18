@@ -1,5 +1,5 @@
 # BUILDER
-FROM crystallang/crystal:1.3-alpine as BUILDER
+FROM crystallang/crystal:1.12-alpine as BUILDER
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY sshd_config.ecr /app
 RUN crystal build entrypoint.cr --release --no-debug
 
 # IMAGE
-FROM alpine:3.15.0
+FROM alpine:3.19.1
 
 LABEL org.opencontainers.image.source https://github.com/Container-Driven-Development/sftp
 

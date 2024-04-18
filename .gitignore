@@ -3,3 +3,4 @@ entrypoint.dwarf
 .cache
 authorized_keys
 tmp
+.envrc
