@@ -31,15 +31,11 @@ jobs:
            --build-arg BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION} \
            --file Dockerfile --tag $IMAGE_NAME:$VERSION
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Log into GitHub Container Registry
-      #   run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # Make sure to use the correct PAT
+      # Generate new here https://github.com/settings/tokens?type=beta
+      # Put it here https://github.com/organizations/Container-Driven-Development/settings/secrets/actions
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image to GitHub Container Registry
         run: |
