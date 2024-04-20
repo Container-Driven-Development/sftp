@@ -32,7 +32,7 @@ jobs:
            --file Dockerfile --tag $IMAGE_NAME:$VERSION
 
       # Make sure to use the correct PAT
-      # Generate new here https://github.com/settings/tokens?type=beta
+      # Generate new here https://github.com/settings/tokens?page=1 ( this doesn't work https://github.com/settings/tokens?type=beta )
       # Put it here https://github.com/organizations/Container-Driven-Development/settings/secrets/actions
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
