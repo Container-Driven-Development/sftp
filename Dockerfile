@@ -1,5 +1,5 @@
 # BUILDER
-FROM crystallang/crystal:1.12-alpine as BUILDER
+FROM --platform=linux/amd64 crystallang/crystal:1.12 as BUILDER
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY sshd_config.ecr /app
 RUN crystal build entrypoint.cr --release --no-debug
 
 # IMAGE
-FROM alpine:3.19.1
+FROM --platform=linux/amd64 ubuntu:22.04
 
 LABEL org.opencontainers.image.source https://github.com/Container-Driven-Development/sftp
 
@@ -25,13 +25,25 @@ ENTRYPOINT ["/entrypoint"]
 
 EXPOSE "${SSHD_PORT}/tcp"
 
-RUN apk --no-cache add openssh openssh-sftp-server pcre libgcc mariadb-client curl busybox-extras
+  # pcre \
+  # libgcc \
+  # busybox-extras \
+
+
+RUN apt-get update && apt-get install -y openssh-server \
+  openssh-sftp-server \
+  mariadb-client \
+  curl \
+  libevent-2.1-7 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /var/run/sshd
 
 COPY --from=BUILDER /app/entrypoint /entrypoint
 
-RUN delgroup ${SSH_GROUP_NAME} && \
-  addgroup -g ${SSH_GROUP_ID} -S ${SSH_USER_NAME} && \
-  adduser -D -h ${SSH_HOMEDIR} -u ${SSH_USER_ID} -G ${SSH_GROUP_NAME} -s /bin/sh ${SSH_USER_NAME} && \
+RUN deluser ${SSH_USER_NAME} && \
+  addgroup --gid ${SSH_GROUP_ID} ${SSH_USER_NAME} && \
+  adduser --home ${SSH_HOMEDIR} --uid ${SSH_USER_ID} --ingroup ${SSH_GROUP_NAME} --shell /bin/sh ${SSH_USER_NAME} && \
   echo "${SSH_USER_NAME}:*" | chpasswd -e && \
   chown root:root ${SSH_HOMEDIR} && \
   chmod 755 /var/www && \
