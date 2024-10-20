@@ -33,7 +33,9 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.plulPolicy }}
+          env:
+            {{- toYaml .Values.extraEnv | nindent 12 }}
           ports:
             - name: sftp
               containerPort: {{ .Values.service.port }}

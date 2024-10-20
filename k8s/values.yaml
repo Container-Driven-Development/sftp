@@ -4,7 +4,7 @@
 
 extraEnv:
   - name: SSHD_ENABLE_SSH # Enable for ssh access
-    value: false
+    value: "false"
   - name: SSH_CLIENT_somename
     value: ssh-ed25519 AAAAC3NzaA1lZCI1NTE5AAAA...
 
@@ -49,12 +49,12 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-livenessProbe:
-  tcpSocket:
-    port: sftp
-readinessProbe:
-  tcpSocket:
-    port: sftp
+# livenessProbe:
+#   tcpSocket:
+#     port: sftp
+# readinessProbe:
+#   tcpSocket:
+#     port: sftp
 
 
 # Additional volumes on the output Deployment definition.
